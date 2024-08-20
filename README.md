@@ -75,6 +75,15 @@ We then assemble MAC reads using hifiasm
 
 ```sh
 hifiasm -t 16 --hg-size 100m  -o hifiasm_MAC MAC_reads.fasta
+awk '/^S/{print ">"$2"\n"$3}' hifiasm_MAC.bp.p_ctg.gfa | fold > hifiasm_MAC.bp.p_ctg.gfa.fa
+awk '/^S/{print $2"\t"$4"\t"$5}' hifiasm_MAC.bp.p_ctg.gfa | sed 's/LN:i://;s/rd:i://' > hifiasm_MAC.bp.p_ctg.gfa.cov
 ```
+
+### <a name="assemblyfilter"></a>MAC assembly filtering 
+
+```sh
+hifiasm -t 16 --hg-size 100m  -o hifiasm_MAC MAC_reads.fasta
+```
+
 
 ### <a name="assemblycheck"></a>MAC assembly check 
