@@ -27,7 +27,7 @@ Rscript genomescope.R -i hifi.hist -k 21 -p 2 -o genomescope2
 ```
 
 Genomescope2 resulting image 
-![TRead set kmer profile]([http://url/to/transformed_linear_plot.png](https://github.com/chklopp/macassemblies/blob/main/transformed_linear_plot.png))
+![Read set kmer profile](http://url/to/transformed_linear_plot.png](https://github.com/chklopp/macassemblies/blob/main/transformed_linear_plot.png)
 
 Now we know that the MAC kernel coverage mode is 
 
