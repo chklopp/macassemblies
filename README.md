@@ -2,7 +2,7 @@
 
 Some organisms, such as paramecium, have MIC and MAC kernels. These kernels have different content and organisations. The MAC kernel in included in the larger MIC kernel. This tutorial is meant to show you how to assemble the MAC kernel for a dataset which is a mixture of MIC and MAC reads. 
 First, we take as granted that MAC reads are many time more present in the read set than MIC reads (in some cases 100 times more present for example). Four time more present in the example used in this tutorial.  
-Second MAC chromosomes which are many times more numerous as MIC chromosomes end with characteristic telomeric repeats (AAAACC and AAACCC or TTGGGG and TTTGGG in our example). These repeats will be an indicator of correct placement of chromosome ends. 
+Second MAC chromosomes which are many times more numerous as MIC chromosomes end with characteristic telomeric repeats (AAAACC and AAACCC or TTGGGG and TTTGGG in our example). These repeats will be indicators of correct placement of chromosome ends. 
 
 ## <a name="proc"></a>Procedure
 
