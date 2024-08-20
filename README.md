@@ -1,16 +1,16 @@
 ## <a name="intro"></a>Introduction
 
-Some organisms, such as paramecium, have MIC and MAC kernels. These kernels have different content and organisations. MAC kernel in included in the larger MIC kernel. This tutorial is ment to show you how to assemble the MAC kernel for a dataset which is a mixture of MIC and MAC reads. 
-First, we take as granted that MAC reads are many time more present in the read set than MIC reads (100 times more present for example). 
-Second MAC chromosomes which are many times more numerous as MIC chromosomes end with characteristic telomeric repeats. These repeats will be an indicator of correct placement of chromosome ends. 
+Some organisms, such as paramecium, have MIC and MAC kernels. These kernels have different content and organisations. The MAC kernel in included in the larger MIC kernel. This tutorial is meant to show you how to assemble the MAC kernel for a dataset which is a mixture of MIC and MAC reads. 
+First, we take as granted that MAC reads are many time more present in the read set than MIC reads (in some cases 100 times more present for example). Four time more present in the example used in this tutorial.  
+Second MAC chromosomes which are many times more numerous as MIC chromosomes end with characteristic telomeric repeats (AAAACC and AAACCC or TTGGGG and TTTGGG in our example). These repeats will be an indicator of correct placement of chromosome ends. 
 
 ## <a name="proc"></a>Procedure
 
-The procedure uses kmer profiles to separate MIC and MAC reads. MAC reads should contain kmers with high coverage (arount the coverage mode of the complete read set) with only small low coverage sections corresponding to sequencing errors. MIC reads should contain much larger low coverage section corresponding to MIC specific regions which have not be amplified in the MIC to MAC transition. 
+The procedure uses kmer profiles to separate MIC and MAC reads. MAC reads should contain kmers with high coverage (arount the coverage mode of the complete read set) with only small low coverage sections corresponding to sequencing errors. MIC reads should contain much larger low coverage section corresponding to MIC specific regions which have not been amplified in the MIC to MAC transition. 
 
 ### <a name="readcov"></a>Kmer read coverage profile
 
-The first step it to build the kmer read profile to find out at which coverage the MAC kernel has been sequenced. This is performed using jellyfish to create a kmer dictionary and genomescope2 to generate the profile graphical view. 
+The first step it to build the kmer read profile to find out at which coverage MIC and MAC kernels has been sequenced. This is performed using jellyfish to create a kmer dictionary and genomescope2 to generate the profile graphical view. 
 
 We will use the public read set ERR11843474 which can be downloaded using the following link 
 [ERR11843474]: ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR118/074/ERR11843474/ERR11843474.fastq.gz
@@ -27,9 +27,11 @@ Rscript genomescope.R -i hifi.hist -k 21 -p 2 -o genomescope2
 ```
 
 Genomescope2 resulting image 
-![Read set kmer profile](https://github.com/chklopp/macassemblies/blob/main/transformed_linear_plot.png))
+![Read set kmer profile](https://github.com/chklopp/macassemblies/blob/main/transformed_linear_plot.png)
 
-Now we know that the MAC kernel coverage mode is 
+We consider the peak at 190x coverage to be MIC specific kmer and the coverages above to be MAC related. 
+
+Now we know that the MAC kernel coverage mode is 829x.
 
 We can now generate a kmer coverage profile along each read. This profile will be used to select the MAC reads. 
 These profiles are generated using the jellyfish query_per_sequence script which can be found here : 
@@ -57,7 +59,7 @@ cat ERR11843474.fasta.kmer_profiles | paste - - | sed 's/>//' | awk -f median_sp
 From this new file we can calculate the number or chunks having a median lower than 10 and the number of chunks having a median over 1000. This is performed using and awk command line.
 
 ```sh
-awk '{a=0;b=0;for (i=2;i<=NF;i++){if ($i < 10){a++}; if ($i > 1000){b++}} print $1"\t"a"\t"b}' ERR11843474.fasta.kmer_profiles.median > ERR11843474.fasta.kmer_profiles.median.stats
+awk '{a=0;b=0;for (i=2;i<=NF;i++){if ($i < 250){a++}; if ($i > 2500){b++}} print $1"\t"a"\t"b}' ERR11843474.fasta.kmer_profiles.median > ERR11843474.fasta.kmer_profiles.median.stats
 ```
 
 We remove from the list all the reads having at least one section with a coverage under 10. 
